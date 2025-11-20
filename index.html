@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Seu Perfume Exclusivo</title>
+
   <style>
     body {
       margin: 0;
@@ -59,10 +60,38 @@
   const descricao = document.getElementById("descricao");
 
   if (!pedido) {
-    descricao.innerHTML = "Nenhum código de pedido foi encontrado.";
+    descricao.innerHTML = "Nenhum código de pedido foi informado.";
   } else {
-    // Aqui você futuramente vai puxar um JSON com os dados
-    descricao.innerHTML = `Código do pedido: <span class="highlight">${pedido}</span><br><br>Seu perfume está sendo carregado…`;
+    fetch("data.json")
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Erro ao carregar data.json");
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (!data[pedido]) {
+          descricao.innerHTML = `
+            Não encontramos informações para o pedido 
+            <span class="highlight">${pedido}</span>.
+            <br><br>Verifique o código ou entre em contato com o vendedor.
+          `;
+          return;
+        }
+
+        const info = data[pedido];
+
+        titulo.innerHTML = `Olá, <span class="highlight">${info.cliente}</span>`;
+        descricao.innerHTML = `
+          Seu perfume <span class="highlight">${info.perfume}</span> está pronto!
+          <br><br>
+          <strong>Notas olfativas:</strong><br>${info.notas}
+        `;
+      })
+      .catch(err => {
+        descricao.innerHTML = "Erro ao carregar os dados do perfume.";
+        console.error(err);
+      });
   }
 </script>
 
