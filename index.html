@@ -3,19 +3,68 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meu Perfume</title>
+  <title>Seu Perfume Exclusivo</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f7f7f7;
-      padding: 40px;
+      margin: 0;
+      padding: 0;
+      background: #111;
+      color: #fff;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
       text-align: center;
     }
-    h1 { font-size: 32px; }
+
+    .card {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      padding: 40px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 420px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.5);
+      animation: fadeIn 1s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 { margin-top: 0; font-size: 28px; }
+    p { font-size: 16px; opacity: 0.8; }
+    .highlight { color: #e5c890; font-weight: bold; }
   </style>
 </head>
 <body>
-  <h1>Olá! Bem-vindo à página do seu perfume.</h1>
-  <p>Esse site está rodando no GitHub Pages.</p>
+
+<div class="card">
+  <h1 id="titulo">Seu Perfume Exclusivo</h1>
+  <p id="descricao">Carregando informações do pedido…</p>
+</div>
+
+<script>
+  function param(nome) {
+    return new URL(window.location.href).searchParams.get(nome);
+  }
+
+  const pedido = param("p");
+
+  const titulo = document.getElementById("titulo");
+  const descricao = document.getElementById("descricao");
+
+  if (!pedido) {
+    descricao.innerHTML = "Nenhum código de pedido foi encontrado.";
+  } else {
+    // Aqui você futuramente vai puxar um JSON com os dados
+    descricao.innerHTML = `Código do pedido: <span class="highlight">${pedido}</span><br><br>Seu perfume está sendo carregado…`;
+  }
+</script>
+
 </body>
 </html>
